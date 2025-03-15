@@ -10,16 +10,24 @@
     src: url(../assets/fonts/static/RedHatText-Bold.ttf);
 }
 
+@font-face {
+    font-family: 'RedHat-SemiBold';
+    src: url(../assets/fonts/static/RedHatText-SemiBold.ttf);
+}
+
 :root {
     /* FONTS: */
     --font-family-regular: 'RedHat';
     --font-family-bold: 'RedHat-Bold';
+    --font-family-semibold: 'RedHat-SemiBold';
 
     /* COLORS */
     --body-bg-color: #f7f6f5;
     --aside-bg-color: #fff;
     --aside-title-color: #b47500;
     --card-cart-btn-border: #ff0000;
+    --card-add-cart-color: #000;
+    --card-category-color: #808080;
 }
 
 * {
@@ -39,6 +47,11 @@ body {
     padding: 70px;
     display: flex;
     gap: 30px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--card-add-cart-color);
 }
 
 /* MAIN  */
@@ -62,8 +75,8 @@ main {
 }
 
 .desserts-cards-container {
-    width: 260px;
     height: 300px;
+    margin-bottom: 30px;
 }
 
 .dessert-card-body {
@@ -81,9 +94,9 @@ main {
 .dessert-card-add-cart {
     position: absolute;
     bottom: -18px;
-    left: 25px;
-    width: 75%;
-    padding: 8px 18px;
+    left: 20%;
+    width: 60%;
+    padding: 8px 12px;
     border-radius: 20px;
     background-color: var(--aside-bg-color);
     border: 1px solid var(--card-cart-btn-border);
@@ -93,13 +106,30 @@ main {
     gap: 5px;
 }
 
-.card-footer {
+.dessert-card-add-cart span {
+    font-family: var(--font-family-semibold);
+}
+
+.dessert-card-footer {
     margin-top: 30px;
+}
+
+.dessert-category {
+    color: var(--card-category-color);
+}
+
+.dessert-product {
+    font-family: var(--font-family-semibold);
+}
+
+.dessert-price {
+    font-family: var(--font-family-semibold);
+    color: var(--aside-title-color);
 }
 
 /* ASIDE */
 .aside {
-    background-color: white;
+    background-color: var(--aside-bg-color);
     width: 30%;
     height: 280px;
     border-radius: 8px;
@@ -120,6 +150,9 @@ main {
 
 .aside-container p {
     margin-top: 20px;
+    font-family: var(--font-family-semibold);
+    font-size: 14px;
+    color: var(--aside-title-color);
 }
 
 @media (min-width: 1001px) and (max-width: 1320px) {
