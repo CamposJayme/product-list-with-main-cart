@@ -7,13 +7,22 @@
 }
 
 body {
+    max-width: 1360px;
+    margin: 0 auto;
     background-color: #f7f6f5;
+}
+
+#root {
     padding: 70px;
     display: flex;
     gap: 30px;
 }
 
 /* MAIN  */
+main {
+    width: 70%;
+}
+
 .header {
     margin-bottom: 20px;
 }
@@ -57,4 +66,28 @@ body {
 
 .card-footer {
     margin-top: 30px;
+}
+
+/* ASIDE */
+.aside {
+    background-color: white;
+    width: 30%;
+    height: 280px;
+    border-radius: 8px;
+    padding: 25px;
+}
+
+.aside h2 {
+    color: #b47500;
+}
+
+.aside-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.aside-container p {
+    margin-top: 20px;
 }
