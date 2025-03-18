@@ -50,7 +50,6 @@ body {
 }
 
 a {
-    text-decoration: none;
     color: var(--card-add-cart-color);
 }
 
@@ -104,6 +103,7 @@ main {
     display: flex;
     justify-content: center;
     gap: 5px;
+    cursor: pointer;
 }
 
 .dessert-card-add-cart span {
@@ -181,8 +181,8 @@ main {
         width: 100%;
     }
 
-    .aside {
-        width: 70%;
+    main, .aside {
+        width: 90%;
     }
 }
 
@@ -204,7 +204,5 @@ main {
 
     main, .aside {
         width: 90%;
-    }
-
-    
+    }    
 }
