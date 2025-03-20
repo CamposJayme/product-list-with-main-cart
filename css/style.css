@@ -73,18 +73,14 @@ main {
     gap: 25px;
 }
 
-.desserts-cards-container {
-    height: 300px;
-    margin-bottom: 30px;
-}
 
-.dessert-card-body {
+.desserts-card-body {
     position: relative;
     width: 100%;
     height: 230px;
 }
 
-.dessert-card-body .dessert-card-image {
+.dessert-card-body, .dessert-card-image {
     width: 100%;
     height: 100%;
     border-radius: 6px;
