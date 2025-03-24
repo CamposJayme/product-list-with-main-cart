@@ -26,9 +26,11 @@ const createCardStructure = () => {
 
     const cardCartImg = document.createElement('img');
     cardCartImg.setAttribute('src', 'assets/images/icon-add-to-cart.svg');
+    cardCartImg.classList.add('cart-icon');
 
     const cardCartAddContent = document.createElement('span');
     cardCartAddContent.textContent = 'Add to Cart';
+    cardCartAddContent.classList.add('cart-content');
 
     cardCartBtn.appendChild(cardCartImg);
     cardCartBtn.appendChild(cardCartAddContent);
@@ -89,6 +91,20 @@ window.addEventListener('load', () => {
                 fillCardWithData(card, productData);
                 cardSection.appendChild(card);
             });
+
+            // Adicionar Item (+):
+            const addItemToCartBtn = document.querySelectorAll('.dessert-card-add-cart');
+            let cardPriceContent = document.querySelectorAll('.cart-content');
+            let cartQuantities = new Array(data.length).fill(0);
+
+            addItemToCartBtn.forEach((btn, index) => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    cartQuantities[index]++;
+                    cardPriceContent[index].textContent = cartQuantities[index];
+                })
+            })
+
         })
         .catch(error => console.error('Erro ao carregar o arquivo JSON:', error));
-});    
+});   
