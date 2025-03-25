@@ -94,12 +94,30 @@ window.addEventListener('load', () => {
 
             // Adicionar Item (+):
             const addItemToCartBtn = document.querySelectorAll('.dessert-card-add-cart');
-            let cardPriceContent = document.querySelectorAll('.cart-content');
+            const cartIcon = document.querySelectorAll('.cart-icon');
+            const cardPriceContent = document.querySelectorAll('.cart-content');
             let cartQuantities = new Array(data.length).fill(0);
+            let clickQuantities = new Array(data.length).fill(0);
 
             addItemToCartBtn.forEach((btn, index) => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
+                    if (clickQuantities[index] == 0) {
+                        addItemToCartBtn[index].style.backgroundColor = '#ae3131';
+                        addItemToCartBtn[index].style.color = '#fff';
+                        cartIcon[index].setAttribute('src', 'assets/images/icon-decrement-quantity.svg');
+
+                        clickQuantities[index]++;
+                        console.log('First click!');
+
+                        const incrementItem = document.createElement('img');
+                        incrementItem.classList.add('add-item');
+                        incrementItem.setAttribute('src', 'assets/images/icon-increment-quantity.svg');
+
+                        addItemToCartBtn[index].appendChild(incrementItem);
+                        addItemToCartBtn[index].style.display = 'flex';    
+                        addItemToCartBtn[index].style.justifyContent = 'space-between';    
+                    }
                     cartQuantities[index]++;
                     cardPriceContent[index].textContent = cartQuantities[index];
                 })
