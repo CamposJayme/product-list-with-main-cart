@@ -1,3 +1,4 @@
+// Function responsible for creating the standard structure of the card with the dessert (photo, description, price...)
 const createCardStructure = () => {
     const cardContainer = document.createElement('div');
     cardContainer.classList.add('desserts-cards-container');
@@ -57,10 +58,12 @@ const createCardStructure = () => {
     cardContainer.appendChild(cardBody);
     cardContainer.appendChild(cardFooter);
     
-    return cardContainer;
+    // The 'return' of the container happens because it is the parent element of the card, meaning all the information is stored inside it.
+    return cardContainer; 
 
 };
 
+// This function store the HTML elements and datas from JSON (it will be called ahead to fill each dessert card)
 const fillCardWithData = (card, data) => {
     // Card image:
     const cardImage = card.querySelector('.dessert-card-image');
@@ -81,48 +84,64 @@ const fillCardWithData = (card, data) => {
     cardPrice.textContent = data.price.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
 };
    
-window.addEventListener('load', () => {
+// This function is considered 'the main one', it is responsible for JSON data file comunication and executing other functions 
+// (E.g.: createCardStructure) as we can see ahead
+function loadData() {
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
             const cardSection = document.getElementById('desserts-cards-section');
             data.forEach((productData, index) => {
-                const card = createCardStructure();
-                fillCardWithData(card, productData);
+                const card = createCardStructure(); // Execute 'createCardStructure' function, which means the card in created in HTML trough JS;
+                fillCardWithData(card, productData); // Execute 'fillCardWithData' function, each card is filled with datas like imgs, price, category...
                 cardSection.appendChild(card);
             });
-
-            // Adicionar Item (+):
-            const addItemToCartBtn = document.querySelectorAll('.dessert-card-add-cart');
-            const cartIcon = document.querySelectorAll('.cart-icon');
-            const cardPriceContent = document.querySelectorAll('.cart-content');
-            let cartQuantities = new Array(data.length).fill(0);
-            let clickQuantities = new Array(data.length).fill(0);
-
-            addItemToCartBtn.forEach((btn, index) => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    if (clickQuantities[index] == 0) {
-                        addItemToCartBtn[index].style.backgroundColor = '#ae3131';
-                        addItemToCartBtn[index].style.color = '#fff';
-                        cartIcon[index].setAttribute('src', 'assets/images/icon-decrement-quantity.svg');
-
-                        clickQuantities[index]++;
-                        console.log('First click!');
-
-                        const incrementItem = document.createElement('img');
-                        incrementItem.classList.add('add-item');
-                        incrementItem.setAttribute('src', 'assets/images/icon-increment-quantity.svg');
-
-                        addItemToCartBtn[index].appendChild(incrementItem);
-                        addItemToCartBtn[index].style.display = 'flex';    
-                        addItemToCartBtn[index].style.justifyContent = 'space-between';    
-                    }
-                    cartQuantities[index]++;
-                    cardPriceContent[index].textContent = cartQuantities[index];
-                })
-            })
-
+            setupCartFunctions(data);
         })
         .catch(error => console.error('Erro ao carregar o arquivo JSON:', error));
-});   
+}
+
+// Selects cartBtn and the elements that will be changed when the first click happens in each cartBtn
+function setupCartFunctions(data) {
+    const addItemToCartBtn = document.querySelectorAll('.dessert-card-add-cart');
+    const cartIcon = document.querySelectorAll('.cart-icon');
+    const cardPriceContent = document.querySelectorAll('.cart-content');
+
+    let cartQuantities = new Array(data.length).fill(0);
+    let clickQuantities = new Array(data.length).fill(0);
+
+    addItemToCartBtn.forEach((btn, index) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // execute the 'handleAddItemToCart' that validates the first click and change the elements
+            handleAddItemToCart(btn, cartIcon[index], cardPriceContent[index], cartQuantities, clickQuantities, index);
+        });
+    });
+}
+
+// First click validation, count items and change elements
+function handleAddItemToCart(btn, cartIcon, cardPriceContent, cartQuantities, clickQuantities, index) {
+    if (clickQuantities[index] == 0) {
+        btn.style.backgroundColor = '#ae3131';
+        btn.style.color = '#fff';
+        cartIcon.setAttribute('src', 'assets/images/icon-decrement-quantity.svg');
+
+        clickQuantities[index]++;
+        console.log('First click!');
+
+        const incrementItem = document.createElement('img');
+        incrementItem.classList.add('add-item');
+        incrementItem.setAttribute('src', 'assets/images/icon-increment-quantity.svg');
+
+        btn.appendChild(incrementItem);
+        btn.style.display = 'flex';    
+        btn.style.justifyContent = 'space-between';    
+    }
+
+    //Counting items:
+    cartQuantities[index]++;
+    cardPriceContent.textContent = cartQuantities[index];
+}
+
+//Execute 'loadData' function:
+window.addEventListener('load', loadData);   
