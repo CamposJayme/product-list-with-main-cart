@@ -91,8 +91,8 @@ function loadData() {
         .then(response => response.json())
         .then(data => {
             const cardSection = document.getElementById('desserts-cards-section');
-            data.forEach((productData, index) => {
-                const card = createCardStructure(); // Execute 'createCardStructure' function, which means the card in created in HTML trough JS;
+            data.forEach((productData) => {
+                const card = createCardStructure(); // Execute 'createCardStructure' function, which means the card created in HTML through JS;
                 fillCardWithData(card, productData); // Execute 'fillCardWithData' function, each card is filled with datas like imgs, price, category...
                 cardSection.appendChild(card);
             });
@@ -114,33 +114,55 @@ function setupCartFunctions(data) {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             // execute the 'handleAddItemToCart' that validates the first click and change the elements
-            handleAddItemToCart(btn, cartIcon[index], cardPriceContent[index], cartQuantities, clickQuantities, index);
+            handleItemsToCart(btn, cartIcon[index], cardPriceContent[index], cartQuantities, clickQuantities, index);
         });
-    });
+    });    
 }
 
 // First click validation, count items and change elements
-function handleAddItemToCart(btn, cartIcon, cardPriceContent, cartQuantities, clickQuantities, index) {
+function handleItemsToCart(btn, cartIcon, cardPriceContent, cartQuantities, clickQuantities, index) {
     if (clickQuantities[index] == 0) {
+        btn.style.cursor = 'default';
         btn.style.backgroundColor = '#ae3131';
         btn.style.color = '#fff';
+
         cartIcon.setAttribute('src', 'assets/images/icon-decrement-quantity.svg');
+        cartIcon.style.border = '1px solid #fff';
+        cartIcon.style.borderRadius = '50%';
+        cartIcon.style.padding = '2px';
 
         clickQuantities[index]++;
         console.log('First click!');
 
         const incrementItem = document.createElement('img');
-        incrementItem.classList.add('add-item');
+        incrementItem.classList.add('increment-item');
         incrementItem.setAttribute('src', 'assets/images/icon-increment-quantity.svg');
+        incrementItem.style.border = '1px solid #fff';
+        incrementItem.style.borderRadius = '50%';
+        incrementItem.style.padding = '2px';
 
         btn.appendChild(incrementItem);
         btn.style.display = 'flex';    
-        btn.style.justifyContent = 'space-between';    
-    }
+        btn.style.justifyContent = 'space-between';
 
-    //Counting items:
-    cartQuantities[index]++;
-    cardPriceContent.textContent = cartQuantities[index];
+        //Counting items:
+        cartQuantities[index]++;
+        cardPriceContent.textContent = cartQuantities[index];
+
+        incrementItem.addEventListener('click', (e) => {
+            e.preventDefault();            
+            cartQuantities[index]++;
+            cardPriceContent.textContent = cartQuantities[index];
+        })
+
+        cartIcon.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (cartQuantities[index] > 0) {
+                cartQuantities[index]--;
+                cardPriceContent.textContent = cartQuantities[index];
+            }
+        })
+    }
 }
 
 //Execute 'loadData' function:
