@@ -167,3 +167,7 @@ function handleItemsToCart(btn, cartIcon, cardPriceContent, cartQuantities, clic
 
 //Execute 'loadData' function:
 window.addEventListener('load', loadData);   
+
+function addDessertToCart() {
+    // Code goes here...
+}
