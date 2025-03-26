@@ -119,6 +119,19 @@ function setupCartFunctions(data) {
     });    
 }
 
+function addDessertToCart() {
+    const aside = document.querySelector('.aside-container');
+
+    const asideImg = aside.querySelector('img').remove();
+    const asideEmptyMsg = aside.querySelector('p').remove();
+
+    const item = document.createElement('div');
+    const itemName = document.createElement('p');
+    const itemQuantity = document.createElement('span');
+    const itemPrice = document.createElement('span');
+    const itemTotalPrice = document.createElement('span');
+}
+
 // First click validation, count items and change elements
 function handleItemsToCart(btn, cartIcon, cardPriceContent, cartQuantities, clickQuantities, index) {
     if (clickQuantities[index] == 0) {
@@ -153,6 +166,7 @@ function handleItemsToCart(btn, cartIcon, cardPriceContent, cartQuantities, clic
             e.preventDefault();            
             cartQuantities[index]++;
             cardPriceContent.textContent = cartQuantities[index];
+            addDessertToCart();
         })
 
         cartIcon.addEventListener('click', (e) => {
@@ -166,8 +180,4 @@ function handleItemsToCart(btn, cartIcon, cardPriceContent, cartQuantities, clic
 }
 
 //Execute 'loadData' function:
-window.addEventListener('load', loadData);   
-
-function addDessertToCart() {
-    // Code goes here...
-}
+window.addEventListener('load', loadData); 
