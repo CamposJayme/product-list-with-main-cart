@@ -106,6 +106,30 @@ main {
     font-family: var(--font-family-semibold);
 }
 
+.dessert-card-add-cart.added {
+    cursor: default;
+    background-color: #ae3131;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dessert-card-add-cart.added .cart-icon {
+    display: none;
+}
+
+.decrement-btn, .increment-btn {
+    display: none;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.dessert-card-add-cart.added .decrement-btn, .dessert-card-add-cart.added .increment-btn {
+    display: block;
+}
+
 .dessert-card-footer {
     margin-top: 30px;
 }

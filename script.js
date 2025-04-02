@@ -107,77 +107,58 @@ function setupCartFunctions(data) {
     const cartIcon = document.querySelectorAll('.cart-icon');
     const cardPriceContent = document.querySelectorAll('.cart-content');
 
-    let cartQuantities = new Array(data.length).fill(0);
-    let clickQuantities = new Array(data.length).fill(0);
+    let cartList = new Array(data.length).fill(0);
 
     addItemToCartBtn.forEach((btn, index) => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             // execute the 'handleAddItemToCart' that validates the first click and change the elements
-            handleItemsToCart(btn, cartIcon[index], cardPriceContent[index], cartQuantities, clickQuantities, index);
+            handleItemsToCart(btn, index, cardPriceContent, cartList);
         });
     });    
 }
 
-function addDessertToCart() {
-    const aside = document.querySelector('.aside-container');
+function handleItemsToCart(btn, index, cardPriceContent, cartList) {
+    let decrementBtn = btn.querySelector('.decrement-btn');
+    let incrementBtn = btn.querySelector('.increment-btn');
 
-    const asideImg = aside.querySelector('img').remove();
-    const asideEmptyMsg = aside.querySelector('p').remove();
+    if ((!decrementBtn && !incrementBtn)) {
+        decrementBtn = document.createElement('img');
+        decrementBtn.setAttribute('src', 'assets/images/icon-decrement-quantity.svg');
+        decrementBtn.classList.add('decrement-btn');
 
-    const item = document.createElement('div');
-    const itemName = document.createElement('p');
-    const itemQuantity = document.createElement('span');
-    const itemPrice = document.createElement('span');
-    const itemTotalPrice = document.createElement('span');
-}
+        incrementBtn = document.createElement('img');
+        incrementBtn.setAttribute('src', 'assets/images/icon-increment-quantity.svg');
+        incrementBtn.classList.add('increment-btn');
 
-// First click validation, count items and change elements
-function handleItemsToCart(btn, cartIcon, cardPriceContent, cartQuantities, clickQuantities, index) {
-    if (clickQuantities[index] == 0) {
-        btn.style.cursor = 'default';
-        btn.style.backgroundColor = '#ae3131';
-        btn.style.color = '#fff';
+        cartList[index] = 1;
+        btn.classList.add('added');
+        cardPriceContent[index].textContent = cartList[index];
+        console.log(btn, index, cartList);
 
-        cartIcon.setAttribute('src', 'assets/images/icon-decrement-quantity.svg');
-        cartIcon.style.border = '1px solid #fff';
-        cartIcon.style.borderRadius = '50%';
-        cartIcon.style.padding = '2px';
+        btn.appendChild(decrementBtn);
+        btn.appendChild(cardPriceContent[index]);
+        btn.appendChild(incrementBtn);
 
-        clickQuantities[index]++;
-        console.log('First click!');
-
-        const incrementItem = document.createElement('img');
-        incrementItem.classList.add('increment-item');
-        incrementItem.setAttribute('src', 'assets/images/icon-increment-quantity.svg');
-        incrementItem.style.border = '1px solid #fff';
-        incrementItem.style.borderRadius = '50%';
-        incrementItem.style.padding = '2px';
-
-        btn.appendChild(incrementItem);
-        btn.style.display = 'flex';    
-        btn.style.justifyContent = 'space-between';
-
-        //Counting items:
-        cartQuantities[index]++;
-        cardPriceContent.textContent = cartQuantities[index];
-
-        incrementItem.addEventListener('click', (e) => {
-            e.preventDefault();            
-            cartQuantities[index]++;
-            cardPriceContent.textContent = cartQuantities[index];
-            addDessertToCart();
-        })
-
-        cartIcon.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (cartQuantities[index] > 0) {
-                cartQuantities[index]--;
-                cardPriceContent.textContent = cartQuantities[index];
+        incrementBtn.onclick = () => {
+            cartList[index]++;
+            cardPriceContent[index].textContent = cartList[index];
+        }
+    
+        decrementBtn.onclick = () => {
+            if (cartList[index] > 0) {
+                cartList[index]--;
+                cardPriceContent[index].textContent = cartList[index]; 
+            } 
+    
+            if (cartList[index] == 0)  {
+                btn.classList.remove('added');
+                cardPriceContent[index].textContent = 'Add to Cart';
             }
-        })
-    }
+        }
+    } 
 }
+
 
 //Execute 'loadData' function:
 window.addEventListener('load', loadData); 
