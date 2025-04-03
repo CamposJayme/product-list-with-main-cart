@@ -123,34 +123,41 @@ function loadData() {
 
 // Selects cartBtn and the elements that will be changed when the first click happens in each cartBtn
 function setupCartFunctions(data) {
-    console.log(data);
+    // console.log(data);
     const addItemToCartBtn = document.querySelectorAll('.dessert-card-add-cart');
     const addQuantityBtn = document.querySelectorAll('.cart-quantity-control');
     const cardQuantity = document.querySelectorAll('.quantity');
+    const cart = document.querySelector('.aside');
 
     addItemToCartBtn.forEach((btn, index) => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             // execute the 'handleAddItemToCart' that validates the first click and change the elements
-            handleItemsToCart(btn, index, addQuantityBtn, cardQuantity);
+            handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart);
         });
     });    
 }
 
-function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity) {
-    console.log(btn, index, addQuantityBtn, cardQuantity);
+function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart) {
+    // console.log(btn, index, addQuantityBtn, cardQuantity);
     btn.style.display = 'none';
     addQuantityBtn[index].style.display = 'flex';
 
     const decrementBtn = document.querySelectorAll('.decrement-btn');
     const incrementBtn = document.querySelectorAll('.increment-btn');
+
+    // console.log(cart);
+    const cartTotalQuantity = cart.querySelector('h2 span');
+    cartTotalQuantity.innerText++;
     
     incrementBtn[index].onclick = () => {
         cardQuantity[index].innerText++;
+        cartTotalQuantity.innerText++;
     }
 
     decrementBtn[index].onclick = () => {
         cardQuantity[index].innerText--;
+        cartTotalQuantity.innerText--;
         if (cardQuantity[index].innerText < 1) {
             addQuantityBtn[index].style.display = 'none';
             btn.style.display = 'flex';
