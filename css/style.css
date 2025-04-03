@@ -106,29 +106,39 @@ main {
     font-family: var(--font-family-semibold);
 }
 
-.dessert-card-add-cart.added {
-    cursor: default;
-    background-color: #ae3131;
-    color: #fff;
-    display: flex;
+.cart-quantity-control {
+    position: absolute;
+    bottom: -18px;
+    left: 20%;
+    width: 60%;
+    padding: 8px 12px;
+    background-color: var(--card-cart-btn-border);
+    border-radius: 20px;
+    border: 1px solid var(--body-bg-color);
+
+    display: none;
+    align-items: center;
     justify-content: space-between;
 }
 
-.dessert-card-add-cart.added .cart-icon {
-    display: none;
-}
-
-.decrement-btn, .increment-btn {
-    display: none;
-    border: 1px solid #fff;
+.decrement-btn {
+    border: 1px solid var(--body-bg-color);
     border-radius: 50%;
-    padding: 2px;
+    padding: 8px 4px;
     cursor: pointer;
 }
 
-.dessert-card-add-cart.added .decrement-btn, .dessert-card-add-cart.added .increment-btn {
-    display: block;
+.quantity {
+    color: var(--body-bg-color);
 }
+
+ .increment-btn {
+    border: 1px solid var(--body-bg-color);
+    border-radius: 50%;
+    padding: 4px;
+    cursor: pointer;
+}
+
 
 .dessert-card-footer {
     margin-top: 30px;
