@@ -139,7 +139,6 @@ main {
     cursor: pointer;
 }
 
-
 .dessert-card-footer {
     margin-top: 30px;
 }
@@ -166,7 +165,7 @@ main {
     padding: 25px;
 }
 
-.aside h2 {
+.aside h2, .aside span {
     font-family: var(--font-family-bold);
     color: var(--aside-title-color);
 }
