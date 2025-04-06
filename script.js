@@ -128,27 +128,35 @@ function setupCartFunctions(data) {
     const addQuantityBtn = document.querySelectorAll('.cart-quantity-control');
     const cardQuantity = document.querySelectorAll('.quantity');
     const cart = document.querySelector('.aside');
-
+    
     addItemToCartBtn.forEach((btn, index) => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             // execute the 'handleAddItemToCart' that validates the first click and change the elements
-            handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart);
+            handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data);
         });
     });    
 }
 
-function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart) {
-    // console.log(btn, index, addQuantityBtn, cardQuantity);
+function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data) {
     btn.style.display = 'none';
     addQuantityBtn[index].style.display = 'flex';
 
+    cardQuantity[index].innerText = 1;
     const decrementBtn = document.querySelectorAll('.decrement-btn');
     const incrementBtn = document.querySelectorAll('.increment-btn');
 
-    // console.log(cart);
     const cartTotalQuantity = cart.querySelector('h2 span');
     cartTotalQuantity.innerText++;
+    
+    const cartContentImg = cart.querySelector('img');
+    const cartContentMsg = cart.querySelector('p');
+
+    if (cardQuantity[index].innerText >= 1 || cartTotalQuantity.innerText >= 1) {
+        cartContentImg.style.display = 'none';
+        cartContentMsg.style.display = 'none';
+        addItemToCart(cart, index, cardQuantity, data);
+    } 
     
     incrementBtn[index].onclick = () => {
         cardQuantity[index].innerText++;
@@ -158,10 +166,43 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart) {
     decrementBtn[index].onclick = () => {
         cardQuantity[index].innerText--;
         cartTotalQuantity.innerText--;
-        if (cardQuantity[index].innerText < 1) {
+
+        if (parseInt(cardQuantity[index].innerText) < 1) {
             addQuantityBtn[index].style.display = 'none';
             btn.style.display = 'flex';
-            cardQuantity[index].innerText = 1;
+            const itemToRemove = cart.querySelector(`#cart-item-${index}`);
+            if (itemToRemove) {
+                itemToRemove.remove();
+            }
+        }
+    }
+}
+
+function addItemToCart(cart, index, cardQuantity, data) {
+    console.log(data);
+    const asideContainer = cart.querySelector('.aside-container');
+
+    let existingItem = asideContainer.querySelector(`#cart-item-${index}`);
+    if (!existingItem) {
+        asideContainer.innerHTML += `<div id="cart-item-${index}" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px;">
+                                        <h4>${data[index].name}</h4>
+                                        <p style="margin-top: 0px; display: flex; gap: 8px;">
+                                            <span>${cardQuantity[index].innerText}x</span>
+                                            <span>@ ${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
+                                            <span>${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
+                                        </p>
+                                     </div>
+                                     <hr>`;
+        asideContainer.style.display = 'block';
+    } else {
+        const spanQuantity = existingItem.querySelector('p span');
+        spanQuantity.innerText = `${cardQuantity[index].innerText}x`;
+    }
+    
+    if (parseInt(cardQuantity[index].innerText) < 1) {
+        let itemToRemove = asideContainer.querySelector(`#cart-item-${index}`);
+        if (itemToRemove) {
+            itemToRemove.remove();
         }
     }
 }
