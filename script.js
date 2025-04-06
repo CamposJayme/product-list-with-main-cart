@@ -179,7 +179,6 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
 }
 
 function addItemToCart(cart, index, cardQuantity, data) {
-    console.log(data);
     const asideContainer = cart.querySelector('.aside-container');
 
     let existingItem = asideContainer.querySelector(`#cart-item-${index}`);
