@@ -190,8 +190,7 @@ function addItemToCart(cart, index, cardQuantity, data) {
                                             <span>@ ${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
                                             <span>${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
                                         </p>
-                                     </div>
-                                     <hr>`;
+                                     </div>`;
         asideContainer.style.display = 'block';
     } else {
         const spanQuantity = existingItem.querySelector('p span');

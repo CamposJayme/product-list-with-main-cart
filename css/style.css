@@ -159,7 +159,6 @@ main {
 /* ASIDE */
 .aside {
     background-color: var(--aside-bg-color);
-    align-self: flex-start;
     width: 30%;
     min-height: 280px;
     border-radius: 8px;
@@ -183,6 +182,12 @@ main {
     font-family: var(--font-family-semibold);
     font-size: 14px;
     color: var(--aside-title-color);
+}
+
+@media (min-width: 1001px) {
+    .aside {
+        align-self: flex-start;
+    }
 }
 
 @media (min-width: 1001px) and (max-width: 1320px) {
