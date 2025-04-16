@@ -41,6 +41,7 @@ const createCardStructure = () => {
 
     const cardDecrementBtn = document.createElement('img');
     cardDecrementBtn.setAttribute('src', 'assets/images/icon-decrement-quantity.svg');
+    cardDecrementBtn.setAttribute('data-index', '0');
     cardDecrementBtn.classList.add('decrement-btn');
 
     const cardQuantity = document.createElement('span');
@@ -49,6 +50,7 @@ const createCardStructure = () => {
 
     const cardIncrementBtn = document.createElement('img');
     cardIncrementBtn.setAttribute('src', 'assets/images/icon-increment-quantity.svg');
+    cardIncrementBtn.setAttribute('data-index', '0');
     cardIncrementBtn.classList.add('increment-btn');
 
     cardBtnCountItems.appendChild(cardDecrementBtn);
@@ -157,15 +159,25 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
         cartContentMsg.style.display = 'none';
         addItemToCart(cart, index, cardQuantity, data);
     } 
+
+    const cartItem = document.querySelectorAll(`#cart-item-${index} p span`);
     
     incrementBtn[index].onclick = () => {
-        cardQuantity[index].innerText++;
-        cartTotalQuantity.innerText++;
+        if (cardQuantity[index].innerText == 0) {
+            cardQuantity[index].innerText++;
+            cartTotalQuantity.innerText++;
+        } else {
+            cartItem[index].innerHTML = `${++cardQuantity[index].innerText}x`;
+            cartTotalQuantity.innerText++;
+        }
     }
 
     decrementBtn[index].onclick = () => {
-        cardQuantity[index].innerText--;
-        cartTotalQuantity.innerText--;
+        if (cardQuantity[index].innerText >= 1) {
+            cardQuantity[index].innerText--;
+            cartTotalQuantity.innerText--;
+        }
+        cartItem[index].innerHTML = `${cardQuantity[index].innerText}x`;
 
         if (parseInt(cardQuantity[index].innerText) < 1) {
             addQuantityBtn[index].style.display = 'none';
@@ -190,6 +202,7 @@ function addItemToCart(cart, index, cardQuantity, data) {
                                             <span>@ ${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
                                             <span>${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
                                         </p>
+                                        <div style="background-color: gray; width: 100%; height: 1px;"></div>
                                      </div>`;
         asideContainer.style.display = 'block';
     } else {

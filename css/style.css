@@ -184,6 +184,7 @@ main {
     color: var(--aside-title-color);
 }
 
+/* MEDIA QUERIES */
 @media (min-width: 1001px) {
     .aside {
         align-self: flex-start;
