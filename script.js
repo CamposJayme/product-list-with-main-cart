@@ -173,8 +173,11 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
             }
     
             const cartItem = document.querySelector(`#cart-item-${i} span`);
+            const cartItemTotalPrice = document.querySelector(`#cart-item-${i} span:last-child`);
+            console.log(cartItemTotalPrice);
             if (cartItem) {
                 cartItem.innerHTML = `${cardQuantity[i].innerText}x`;
+                cartItemTotalPrice.innerHTML = `${(data[i].price * cardQuantity[i].innerText).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}`;
             }
         };
     });
@@ -187,8 +190,10 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
             }
     
             const cartItem = document.querySelector(`#cart-item-${i} span`);
+            const cartItemTotalPrice = document.querySelector(`#cart-item-${i} span:last-child`);
             if (cartItem) {
                 cartItem.innerHTML = `${cardQuantity[i].innerText}x`;
+                cartItemTotalPrice.innerHTML = `${(data[i].price * cardQuantity[i].innerText).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}`;
             }
     
             if (parseInt(cardQuantity[i].innerText) < 1) {
@@ -210,12 +215,19 @@ function addItemToCart(cart, index, cardQuantity, data, quantity) {
     let existingItem = asideContainer.querySelector(`#cart-item-${index}`);
     if (!existingItem) {
         asideContainer.innerHTML += `<div id="cart-item-${index}" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px;">
-                                        <h4>${data[index].name}</h4>
-                                        <p style="margin-top: 0px; display: flex; gap: 8px;">
-                                            <span>${quantity}x</span>
-                                            <span>@ ${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
-                                            <span>${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
-                                        </p>
+                                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                                <h4>${data[index].name}</h4>
+                                                <p style="margin-top: 0px; display: flex; gap: 8px;">
+                                                    <span>${quantity}x</span>
+                                                    <span>@ ${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
+                                                    <span>${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
+                                                </p>
+                                            </div>
+                                            <span>
+                                                <img src="assets/images/icon-remove-item.svg" style="cursor: pointer; border: 1px solid #808080; border-radius: 50%; padding: 4px;"></img>
+                                            </span>
+                                        </div>
                                         <div style="background-color: gray; width: 100%; height: 1px;"></div>
                                      </div>`;
         asideContainer.style.display = 'block';
