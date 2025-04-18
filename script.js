@@ -148,6 +148,8 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
     const decrementBtn = document.querySelectorAll('.decrement-btn');
     const incrementBtn = document.querySelectorAll('.increment-btn');
 
+    let quantity = 1;
+
     const cartTotalQuantity = cart.querySelector('h2 span');
     cartTotalQuantity.innerText++;
     
@@ -157,40 +159,52 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
     if (cardQuantity[index].innerText >= 1 || cartTotalQuantity.innerText >= 1) {
         cartContentImg.style.display = 'none';
         cartContentMsg.style.display = 'none';
-        addItemToCart(cart, index, cardQuantity, data);
+        addItemToCart(cart, index, cardQuantity, data, quantity);
     } 
-
-    const cartItem = document.querySelectorAll(`#cart-item-${index} p span`);
     
-    incrementBtn[index].onclick = () => {
-        if (cardQuantity[index].innerText == 0) {
-            cardQuantity[index].innerText++;
-            cartTotalQuantity.innerText++;
-        } else {
-            cartItem[index].innerHTML = `${++cardQuantity[index].innerText}x`;
-            cartTotalQuantity.innerText++;
-        }
-    }
-
-    decrementBtn[index].onclick = () => {
-        if (cardQuantity[index].innerText >= 1) {
-            cardQuantity[index].innerText--;
-            cartTotalQuantity.innerText--;
-        }
-        cartItem[index].innerHTML = `${cardQuantity[index].innerText}x`;
-
-        if (parseInt(cardQuantity[index].innerText) < 1) {
-            addQuantityBtn[index].style.display = 'none';
-            btn.style.display = 'flex';
-            const itemToRemove = cart.querySelector(`#cart-item-${index}`);
-            if (itemToRemove) {
-                itemToRemove.remove();
+    incrementBtn.forEach((btn, i) => {
+        btn.onclick = () => {
+            if (parseInt(cardQuantity[i].innerText) === 0) {
+                cardQuantity[i].innerText++;
+                cartTotalQuantity.innerText++;
+            } else {
+                cardQuantity[i].innerText++;
+                cartTotalQuantity.innerText++;
             }
-        }
-    }
+    
+            const cartItem = document.querySelector(`#cart-item-${i} span`);
+            if (cartItem) {
+                cartItem.innerHTML = `${cardQuantity[i].innerText}x`;
+            }
+        };
+    });
+    
+    decrementBtn.forEach((btn, i) => {
+        btn.onclick = () => {
+            if (parseInt(cardQuantity[i].innerText) >= 1) {
+                cardQuantity[i].innerText--;
+                cartTotalQuantity.innerText--;
+            }
+    
+            const cartItem = document.querySelector(`#cart-item-${i} span`);
+            if (cartItem) {
+                cartItem.innerHTML = `${cardQuantity[i].innerText}x`;
+            }
+    
+            if (parseInt(cardQuantity[i].innerText) < 1) {
+                addQuantityBtn[i].style.display = 'none';
+                const mainBtn = document.querySelectorAll('.dessert-card-add-cart')[i];
+                if (mainBtn) mainBtn.style.display = 'flex';
+    
+                const itemToRemove = cart.querySelector(`#cart-item-${i}`);
+                if (itemToRemove) itemToRemove.remove();
+            }
+        };
+    });
+    
 }
 
-function addItemToCart(cart, index, cardQuantity, data) {
+function addItemToCart(cart, index, cardQuantity, data, quantity) {
     const asideContainer = cart.querySelector('.aside-container');
 
     let existingItem = asideContainer.querySelector(`#cart-item-${index}`);
@@ -198,7 +212,7 @@ function addItemToCart(cart, index, cardQuantity, data) {
         asideContainer.innerHTML += `<div id="cart-item-${index}" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px;">
                                         <h4>${data[index].name}</h4>
                                         <p style="margin-top: 0px; display: flex; gap: 8px;">
-                                            <span>${cardQuantity[index].innerText}x</span>
+                                            <span>${quantity}x</span>
                                             <span>@ ${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
                                             <span>${data[index].price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span>
                                         </p>
