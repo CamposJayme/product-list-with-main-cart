@@ -156,14 +156,13 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
     if (cartTotalQuantity.innerText == 1) {
         document.querySelector('.aside-container img').style.display = 'none';
         document.querySelector('.aside-container p').style.display = 'none';        
-        addItemToCart(cart, index, cardQuantity, data, quantity);
         document.querySelector('.aside-total-order').style.display = 'flex';
         document.querySelector('.aside-total-order').style.justifyContent = 'space-between';
     } 
 
     if (cardQuantity[index].innerText >= 1 || cartTotalQuantity.innerText >= 1) {
         addItemToCart(cart, index, cardQuantity, data, quantity);
-        document.querySelector('.aside-total-order span').innerText = data[index].price;
+        updateTotalPrice(data, cardQuantity);
     } 
     
     incrementBtn.forEach((btn, i) => {
@@ -182,6 +181,8 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
                 cartItem.innerHTML = `${cardQuantity[i].innerText}x`;
                 cartItemTotalPrice.innerHTML = `${(data[i].price * cardQuantity[i].innerText).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}`;
             }
+
+            updateTotalPrice(data, cardQuantity);
         };
     });
     
@@ -215,6 +216,9 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
                 document.querySelector('.aside-container p').style.display = 'block';
                 document.querySelector('.aside-total-order').style.display = 'none';
             }
+
+            updateTotalPrice(data, cardQuantity);
+
         };
     });
     
@@ -253,6 +257,27 @@ function addItemToCart(cart, index, cardQuantity, data, quantity) {
             itemToRemove.remove();
         }
     }
+}
+
+function updateTotalPrice(data, cardQuantity) {
+    let total = 0;
+
+    const cartItems = document.querySelectorAll('[id^="cart-item-"]');
+    
+    cartItems.forEach(item => {
+        const quantityText = item.querySelector('span').innerText;
+        const quantity = parseInt(quantityText);
+        const index = parseInt(item.id.replace('cart-item-', ''));
+        const price = parseFloat(data[index].price);
+
+        total += quantity * price;
+    })
+
+    const totalPriceElement = document.querySelector('.aside-total-order span');
+    totalPriceElement.innerHTML = total.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    });
 }
 
 //Execute 'loadData' function:
