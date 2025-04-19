@@ -240,7 +240,7 @@ function addItemToCart(cart, index, cardQuantity, data, quantity) {
                                                 </p>
                                             </div>
                                             <span>
-                                                <img src="assets/images/icon-remove-item.svg" style="cursor: pointer; border: 1px solid #808080; border-radius: 50%; padding: 4px;"></img>
+                                                <img class="remove-item" src="assets/images/icon-remove-item.svg" style="cursor: pointer; border: 1px solid #808080; border-radius: 50%; padding: 4px;"></img>
                                             </span>
                                         </div>
                                         <div style="background-color: gray; width: 100%; height: 1px;"></div>
@@ -259,9 +259,8 @@ function addItemToCart(cart, index, cardQuantity, data, quantity) {
     }
 }
 
-function updateTotalPrice(data, cardQuantity) {
-    let total = 0;
-
+function updateTotalPrice(data) {
+    let total = 0;    
     const cartItems = document.querySelectorAll('[id^="cart-item-"]');
     
     cartItems.forEach(item => {
@@ -271,6 +270,25 @@ function updateTotalPrice(data, cardQuantity) {
         const price = parseFloat(data[index].price);
 
         total += quantity * price;
+
+        const removeItemBtn = item.querySelector('.remove-item');
+        if (removeItemBtn) {
+            removeItemBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                item.remove();
+
+                const productCard = document.querySelector(`[data-product-id="${index}"]`);
+                if (productCard) {
+                    const addItemToCart = productCard.querySelector('.dessert-card-add-cart');
+                    if (addItemToCart) {
+                        addItemToCart.disabled = false;
+                        addItemToCart.style.display = 'flex';
+                    }
+                }
+
+                updateTotalPrice(data);
+            })
+        }
     })
 
     const totalPriceElement = document.querySelector('.aside-total-order span');
@@ -278,6 +296,7 @@ function updateTotalPrice(data, cardQuantity) {
         style: 'currency',
         currency: 'USD'
     });
+
 }
 
 //Execute 'loadData' function:
