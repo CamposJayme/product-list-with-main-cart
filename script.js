@@ -152,14 +152,18 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
 
     const cartTotalQuantity = cart.querySelector('h2 span');
     cartTotalQuantity.innerText++;
-    
-    const cartContentImg = cart.querySelector('img');
-    const cartContentMsg = cart.querySelector('p');
+
+    if (cartTotalQuantity.innerText == 1) {
+        document.querySelector('.aside-container img').style.display = 'none';
+        document.querySelector('.aside-container p').style.display = 'none';        
+        addItemToCart(cart, index, cardQuantity, data, quantity);
+        document.querySelector('.aside-total-order').style.display = 'flex';
+        document.querySelector('.aside-total-order').style.justifyContent = 'space-between';
+    } 
 
     if (cardQuantity[index].innerText >= 1 || cartTotalQuantity.innerText >= 1) {
-        cartContentImg.style.display = 'none';
-        cartContentMsg.style.display = 'none';
         addItemToCart(cart, index, cardQuantity, data, quantity);
+        document.querySelector('.aside-total-order span').innerText = data[index].price;
     } 
     
     incrementBtn.forEach((btn, i) => {
@@ -174,7 +178,6 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
     
             const cartItem = document.querySelector(`#cart-item-${i} span`);
             const cartItemTotalPrice = document.querySelector(`#cart-item-${i} span:last-child`);
-            console.log(cartItemTotalPrice);
             if (cartItem) {
                 cartItem.innerHTML = `${cardQuantity[i].innerText}x`;
                 cartItemTotalPrice.innerHTML = `${(data[i].price * cardQuantity[i].innerText).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}`;
@@ -203,6 +206,14 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
     
                 const itemToRemove = cart.querySelector(`#cart-item-${i}`);
                 if (itemToRemove) itemToRemove.remove();
+            }
+
+            if (parseInt(cartTotalQuantity.innerText) === 0) {
+                document.querySelector('.aside-container').style.display = 'flex';
+                document.querySelector('.aside-container').style.justifyContent = 'center';
+                document.querySelector('.aside-container img').style.display = 'block';
+                document.querySelector('.aside-container p').style.display = 'block';
+                document.querySelector('.aside-total-order').style.display = 'none';
             }
         };
     });

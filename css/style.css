@@ -184,6 +184,10 @@ main {
     color: var(--aside-title-color);
 }
 
+.aside-total-order {
+    display: none;
+}
+
 /* MEDIA QUERIES */
 @media (min-width: 1001px) {
     .aside {
