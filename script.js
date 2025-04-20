@@ -134,12 +134,13 @@ function setupCartFunctions(data) {
     addItemToCartBtn.forEach((btn, index) => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            // execute the 'handleAddItemToCart' that validates the first click and change the elements
+            // Execute the 'handleAddItemToCart' that validates the first click and change the elements
             handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data);
         });
     });    
 }
 
+// This function basically the system's heart, from this function we can add, remove and control the cart:
 function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data) {
     btn.style.display = 'none';
     addQuantityBtn[index].style.display = 'flex';
@@ -158,6 +159,8 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
         document.querySelector('.aside-container p').style.display = 'none';        
         document.querySelector('.aside-total-order').style.display = 'flex';
         document.querySelector('.aside-total-order').style.justifyContent = 'space-between';
+        document.querySelector('.cart-footer').style.display = 'flex';
+        document.querySelector('.cart-footer').style.flexDirection = 'column';
     } 
 
     if (cardQuantity[index].innerText >= 1 || cartTotalQuantity.innerText >= 1) {
@@ -165,6 +168,7 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
         updateTotalPrice(data, cardQuantity, index, addQuantityBtn);
     } 
     
+    // Here is where we can increment the item quantity by clicking the (+) button:
     incrementBtn.forEach((btn, i) => {
         btn.onclick = () => {
             if (parseInt(cardQuantity[i].innerText) === 0) {
@@ -186,6 +190,7 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
         };
     });
     
+    // Here is where we can decrement the item quantity by clicking the (-) button:
     decrementBtn.forEach((btn, i) => {
         btn.onclick = () => {
             if (parseInt(cardQuantity[i].innerText) >= 1) {
@@ -215,6 +220,7 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
                 document.querySelector('.aside-container img').style.display = 'block';
                 document.querySelector('.aside-container p').style.display = 'block';
                 document.querySelector('.aside-total-order').style.display = 'none';
+                document.querySelector('.cart-footer').style.display = 'none';
             }
 
             updateTotalPrice(data, cardQuantity, index, addQuantityBtn);
@@ -224,6 +230,7 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
     
 }
 
+// This function will create the standard structure for each item inside the cart:
 function addItemToCart(cart, index, cardQuantity, data, quantity) {
     const asideContainer = cart.querySelector('.aside-container');
 
@@ -259,7 +266,8 @@ function addItemToCart(cart, index, cardQuantity, data, quantity) {
     }
 }
 
-function updateTotalPrice(data, cardQuantity, index, addQuantityBtn) {
+// Here is where the system update the total price and handles the quantity per item and total itens inside the cart:
+function updateTotalPrice(data, cardQuantity, _index, addQuantityBtn) {
     let total = 0;    
     let totalItems = 0;
     const cartItems = document.querySelectorAll('[id^="cart-item-"]');
@@ -293,7 +301,7 @@ function updateTotalPrice(data, cardQuantity, index, addQuantityBtn) {
                     cartTotal.innerText = `${totalItems}`;
                 }
 
-                updateTotalPrice(data);
+                updateTotalPrice(data, cardQuantity, _index, addQuantityBtn);
             })
         }
     })
@@ -308,6 +316,7 @@ function updateTotalPrice(data, cardQuantity, index, addQuantityBtn) {
     const emptyCartImage = document.querySelector('.aside-container img');
     const emptyCartText = document.querySelector('.aside-container p');
     const totalOrderContainer = document.querySelector('.aside-total-order');
+    const cartFooter = document.querySelector('.cart-footer');
 
     if (totalItems === 0) {
         asideContainer.style.display = 'flex';
@@ -315,10 +324,12 @@ function updateTotalPrice(data, cardQuantity, index, addQuantityBtn) {
         emptyCartImage.style.display = 'block';
         emptyCartText.style.display = 'block';
         totalOrderContainer.style.display = 'none';
+        cartFooter.style.display = 'none';
     } else {
         emptyCartImage.style.display = 'none';
         emptyCartText.style.display = 'none';
         totalOrderContainer.style.display = 'flex';
+        cartFooter.style.display = 'flex';
     }
 
 }

@@ -184,8 +184,27 @@ main {
     color: var(--aside-title-color);
 }
 
-.aside-total-order {
+.aside-total-order, .cart-footer {
     display: none;
+}
+
+.carbon-neutral-delivery {
+    background-color: #ebe5d9;
+    display: flex;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 4px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.confirm-order-btn {
+    background-color: #ae3131;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 12px;
+    cursor: pointer;
 }
 
 /* MEDIA QUERIES */
