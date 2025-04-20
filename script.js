@@ -162,7 +162,7 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
 
     if (cardQuantity[index].innerText >= 1 || cartTotalQuantity.innerText >= 1) {
         addItemToCart(cart, index, cardQuantity, data, quantity);
-        updateTotalPrice(data, cardQuantity);
+        updateTotalPrice(data, cardQuantity, index, addQuantityBtn);
     } 
     
     incrementBtn.forEach((btn, i) => {
@@ -182,7 +182,7 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
                 cartItemTotalPrice.innerHTML = `${(data[i].price * cardQuantity[i].innerText).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}`;
             }
 
-            updateTotalPrice(data, cardQuantity);
+            updateTotalPrice(data, cardQuantity, index, addQuantityBtn);
         };
     });
     
@@ -217,7 +217,7 @@ function handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data)
                 document.querySelector('.aside-total-order').style.display = 'none';
             }
 
-            updateTotalPrice(data, cardQuantity);
+            updateTotalPrice(data, cardQuantity, index, addQuantityBtn);
 
         };
     });
@@ -259,13 +259,16 @@ function addItemToCart(cart, index, cardQuantity, data, quantity) {
     }
 }
 
-function updateTotalPrice(data) {
+function updateTotalPrice(data, cardQuantity, index, addQuantityBtn) {
     let total = 0;    
+    let totalItems = 0;
     const cartItems = document.querySelectorAll('[id^="cart-item-"]');
+    const cartTotal = document.querySelector('.aside h2 span');
     
     cartItems.forEach(item => {
-        const quantityText = item.querySelector('span').innerText;
+        const quantityText = item.querySelector('span').innerText;        
         const quantity = parseInt(quantityText);
+        totalItems += quantity;
         const index = parseInt(item.id.replace('cart-item-', ''));
         const price = parseFloat(data[index].price);
 
@@ -275,15 +278,19 @@ function updateTotalPrice(data) {
         if (removeItemBtn) {
             removeItemBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                const itemQuantity = parseInt(item.querySelector('span').innerText);
+                totalItems -= itemQuantity;
                 item.remove();
+                cardQuantity[index].innerText = 0;
+                if (parseInt(cardQuantity[index].innerText) < 1) {
+                    addQuantityBtn[index].style.display = 'none';
+                    const mainBtn = document.querySelectorAll('.dessert-card-add-cart')[index];
+                    if (mainBtn) mainBtn.style.display = 'flex';
+                }
 
-                const productCard = document.querySelector(`[data-product-id="${index}"]`);
-                if (productCard) {
-                    const addItemToCart = productCard.querySelector('.dessert-card-add-cart');
-                    if (addItemToCart) {
-                        addItemToCart.disabled = false;
-                        addItemToCart.style.display = 'flex';
-                    }
+
+                if (cartTotal) {
+                    cartTotal.innerText = `${totalItems}`;
                 }
 
                 updateTotalPrice(data);
@@ -296,6 +303,23 @@ function updateTotalPrice(data) {
         style: 'currency',
         currency: 'USD'
     });
+
+    const asideContainer = document.querySelector('.aside-container');
+    const emptyCartImage = document.querySelector('.aside-container img');
+    const emptyCartText = document.querySelector('.aside-container p');
+    const totalOrderContainer = document.querySelector('.aside-total-order');
+
+    if (totalItems === 0) {
+        asideContainer.style.display = 'flex';
+        asideContainer.style.justifyContent = 'center';
+        emptyCartImage.style.display = 'block';
+        emptyCartText.style.display = 'block';
+        totalOrderContainer.style.display = 'none';
+    } else {
+        emptyCartImage.style.display = 'none';
+        emptyCartText.style.display = 'none';
+        totalOrderContainer.style.display = 'flex';
+    }
 
 }
 
