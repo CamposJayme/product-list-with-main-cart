@@ -41,31 +41,41 @@
         </aside>
     </div>
 
+
+
+
+
     <div id="modal-order-confirmed" class="modal-order-confirmed">
-        <div class="modal-container">
-            <header>
-                <img src="assets/images/icon-order-confirmed.svg" alt="icon-order-confirmed">
-                <h2>Order Confirmed</h2>
-                <p>We hope you enjoy your food!</p>
-            </header>
-            <body>
-                <div class="modal-items">
-                    <img src="assets/images/image-tiramisu-thumbnail.jpg">
-                    <div>
-                        <h4>Classic Tiramisu</h4>
-                        <span>1x</span>
-                        <span>@ $5.50</span>
-                    </div>
-                    <span>$5.50</span>
+        <div class="modal">
+            <img src="assets/images/icon-order-confirmed.svg" alt="icon-order-confirmed">
+            <h1>Order Confirmed</h1>
+            <p>We hope you enjoy your food!</p>
+            <div class="order-item">
+                <img src="assets/images/image-tiramisu-thumbnail.jpg">
+                <div>
+                    <span>Classic Tiramisu</span><br>
+                    1x @ $5.50
                 </div>
-                <div class="modal-order-total">
-                    <span>Order Total</span>
-                    <span>$46.50</span>
+                <div class="order-item-total">$5.50</div>
+            </div>
+            <div class="order-item">
+                <img src="assets/images/image-creme-brulee-thumbnail.jpg">
+                <div>
+                    <span>Vanilla Bean Crème Brûlée</span><br>
+                    4x @ $7.00
                 </div>
-            </body>
-            <button>
-                Start New Order
-            </button>
+                <div class="order-item-total">$28.00</div>
+            </div>
+            <div class="order-item">
+                <img src="assets/images/image-panna-cotta-thumbnail.jpg">
+                <div>
+                    <span>Vanilla Panna Cotta</span><br>
+                    2x @ $6.50
+                </div>
+                <div class="order-item-total">$13.00</div>
+            </div>
+            <div class="order-total">Order Total: $46.50</div>
+            <button class="button">Start New Order</button>
         </div>
     </div>
 
