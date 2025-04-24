@@ -207,6 +207,25 @@ main {
     cursor: pointer;
 }
 
+.modal-order-confirmed {
+    background-color: rgba(0, 0, 0, .5);
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.modal-container {
+    background-color: #fff;
+    padding: 28px;
+    border-radius: 6px;
+}
+
 /* MEDIA QUERIES */
 @media (min-width: 1001px) {
     .aside {

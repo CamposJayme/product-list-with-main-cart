@@ -334,5 +334,15 @@ function updateTotalPrice(data, cardQuantity, _index, addQuantityBtn) {
 
 }
 
+document.getElementById('confirm-order-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('modal-order-confirmed').style.display = 'flex';
+})
+
+document.getElementById('modal-order-confirmed').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelector('.modal-order-confirmed').style.display = 'none';
+})
+
 //Execute 'loadData' function:
 window.addEventListener('load', loadData); 
