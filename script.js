@@ -334,10 +334,41 @@ function updateTotalPrice(data, cardQuantity, _index, addQuantityBtn) {
 
 }
 
-document.getElementById('confirm-order-btn').addEventListener('click', (e) => {
+document.getElementById('confirm-order-btn').addEventListener('click', (e, data) => {
     e.preventDefault();
-    document.getElementById('modal-order-confirmed').style.display = 'flex';
-})
+    
+    const modal = document.getElementById('modal-order-confirmed')
+    modal.style.display = 'flex';    
+
+    const modalContent = modal.querySelector('.modal');
+    const oldOrderItems = modal.querySelectorAll('.order-item');
+    oldOrderItems.forEach(item => item.remove());
+
+    const cartItems = document.querySelectorAll('.aside-container [id^="cart-item-"]');
+    const cartTotalPrice = document.querySelector('.aside .aside-total-order');
+
+    cartItems.forEach(cartItem => {
+        const itemName = cartItem.querySelector('h4').innerText;
+        const quantityAndPriceSpans = cartItem.querySelectorAll('p span');
+        const quantityText = quantityAndPriceSpans[0].innerText;
+        const unitPriceText = quantityAndPriceSpans[1].innerText;
+        const totalPriceText = quantityAndPriceSpans[2].innerText;
+        
+        const orderItemDiv = document.createElement('div');
+        orderItemDiv.classList.add('order-item');
+        orderItemDiv.innerHTML = `
+            <img src="assets/images/image-tiramisu-thumbnail.jpg">
+            <div>
+                <span>${itemName}</span><br>
+                ${quantityText} ${unitPriceText}
+            </div>
+            <div class="order-item-total">${totalPriceText}</div>
+        `;
+
+        modalContent.insertBefore(orderItemDiv, modalContent.querySelector('.button'));
+        modalContent.insertBefore(cartTotalPrice, modalContent.querySelector('.button'));
+    });
+});
 
 document.getElementById('modal-order-confirmed').addEventListener('click', (e) => {
     e.preventDefault();
