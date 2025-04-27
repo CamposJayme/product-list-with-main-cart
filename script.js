@@ -1,3 +1,7 @@
+let globalData = [];
+let globalCardQuantity = [];
+let globalAddQuantityBtn = [];
+
 // Function responsible for creating the standard structure of the card with the dessert (photo, description, price...)
 const createCardStructure = () => {
     const cardContainer = document.createElement('div');
@@ -125,17 +129,18 @@ function loadData() {
 
 // Selects cartBtn and the elements that will be changed when the first click happens in each cartBtn
 function setupCartFunctions(data) {
-    // console.log(data);
+    globalData = data;
+    globalCardQuantity = document.querySelectorAll('.quantity');
+    globalAddQuantityBtn = document.querySelectorAll('.cart-quantity-control');
+
     const addItemToCartBtn = document.querySelectorAll('.dessert-card-add-cart');
-    const addQuantityBtn = document.querySelectorAll('.cart-quantity-control');
-    const cardQuantity = document.querySelectorAll('.quantity');
     const cart = document.querySelector('.aside');
     
     addItemToCartBtn.forEach((btn, index) => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             // Execute the 'handleAddItemToCart' that validates the first click and change the elements
-            handleItemsToCart(btn, index, addQuantityBtn, cardQuantity, cart, data);
+            handleItemsToCart(btn, index, globalAddQuantityBtn, globalCardQuantity, cart, globalData);
         });
     });    
 }
@@ -236,7 +241,7 @@ function addItemToCart(cart, index, cardQuantity, data, quantity) {
 
     let existingItem = asideContainer.querySelector(`#cart-item-${index}`);
     if (!existingItem) {
-        asideContainer.innerHTML += `<div id="cart-item-${index}" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px;">
+        asideContainer.innerHTML += `<div id="cart-item-${index}" data-index="${index}" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px;">
                                         <div style="display: flex; align-items: center; justify-content: space-between;">
                                             <div style="display: flex; flex-direction: column; gap: 8px;">
                                                 <h4>${data[index].name}</h4>
@@ -334,7 +339,7 @@ function updateTotalPrice(data, cardQuantity, _index, addQuantityBtn) {
 
 }
 
-document.getElementById('confirm-order-btn').addEventListener('click', (e, data) => {
+document.getElementById('confirm-order-btn').addEventListener('click', (e) => {
     e.preventDefault();
     
     const modal = document.getElementById('modal-order-confirmed')
@@ -346,18 +351,27 @@ document.getElementById('confirm-order-btn').addEventListener('click', (e, data)
 
     const cartItems = document.querySelectorAll('.aside-container [id^="cart-item-"]');
     const cartTotalPrice = document.querySelector('.aside .aside-total-order');
+    const oldTotalPriceClone = modalContent.querySelector('.aside-total-order');
+    
+    if (oldTotalPriceClone) oldTotalPriceClone.remove();
 
+    const cartTotalPriceClone = cartTotalPrice.cloneNode(true);
+    
     cartItems.forEach(cartItem => {
         const itemName = cartItem.querySelector('h4').innerText;
         const quantityAndPriceSpans = cartItem.querySelectorAll('p span');
         const quantityText = quantityAndPriceSpans[0].innerText;
         const unitPriceText = quantityAndPriceSpans[1].innerText;
         const totalPriceText = quantityAndPriceSpans[2].innerText;
+
+        const index = cartItem.getAttribute('data-index');
+
+        const itemImage = globalData[index].image.thumbnail;
         
         const orderItemDiv = document.createElement('div');
         orderItemDiv.classList.add('order-item');
         orderItemDiv.innerHTML = `
-            <img src="assets/images/image-tiramisu-thumbnail.jpg">
+            <img src="${itemImage}">
             <div>
                 <span>${itemName}</span><br>
                 ${quantityText} ${unitPriceText}
@@ -366,13 +380,38 @@ document.getElementById('confirm-order-btn').addEventListener('click', (e, data)
         `;
 
         modalContent.insertBefore(orderItemDiv, modalContent.querySelector('.button'));
-        modalContent.insertBefore(cartTotalPrice, modalContent.querySelector('.button'));
+        modalContent.insertBefore(cartTotalPriceClone, modalContent.querySelector('.button'));
     });
 });
 
-document.getElementById('modal-order-confirmed').addEventListener('click', (e) => {
-    e.preventDefault();
+function resetOrder() {
+    const cartItems = document.querySelectorAll('[id^="cart-item-"]');
+    cartItems.forEach(item => item.remove());
+
+    globalCardQuantity.forEach((counter, index) => {
+        counter.innerText = 0;
+        globalAddQuantityBtn[index].style.display = 'none'
+        const mainBtn = document.querySelectorAll('.dessert-card-add-cart')[index];
+        if (mainBtn) mainBtn.style.display = 'flex';
+    });
+
+    const cartTotal = document.querySelector('.aside h2 span');
+    cartTotal.innerText = '0';
+    updateTotalPrice(globalData, globalCardQuantity, 0, globalAddQuantityBtn);
+
     document.querySelector('.modal-order-confirmed').style.display = 'none';
+}
+
+// Clicking outside modal:
+document.getElementById('modal-order-confirmed').addEventListener('click', (e) => {
+    if (e.target.id === 'modal-order-confirmed') {
+        resetOrder();
+    }
+});
+
+// Clicking for new order:
+document.getElementById('start-new-order').addEventListener('click', () => {
+    resetOrder();
 })
 
 //Execute 'loadData' function:
